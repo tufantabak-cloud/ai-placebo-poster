@@ -2574,3 +2574,13 @@ img, canvas, svg, video {
     min-width: 45px !important;
   }
 }
+
+.footer-email-link {
+    color: #f0f2f5;
+    text-decoration: none;
+}
+
+.exp-final-btns-wrapper {
+    margin-top: 2rem;
+}
+
