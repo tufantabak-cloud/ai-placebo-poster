@@ -2584,3 +2584,23 @@ img, canvas, svg, video {
     margin-top: 2rem;
 }
 
+
+/* MOBILE FIX FOR LANDING TITLE */
+@media (max-width: 768px) {
+    .role-container {
+        padding-top: 120px !important;
+        justify-content: flex-start !important;
+    }
+    .landing-title {
+        position: relative !important;
+        z-index: 10 !important;
+        display: block !important;
+        margin-top: 20px !important;
+    }
+    .landing-header-center {
+        display: block !important;
+        font-size: 0.7rem !important;
+        top: 20px;
+    }
+}
+
