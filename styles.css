@@ -900,6 +900,7 @@ body.mode-visitor .visitor-option {
     justify-content: center;
     max-width: 1000px;
     width: 100%;
+    height: auto;
     min-height: 100vh;
 }
 
@@ -2011,6 +2012,12 @@ input, select, textarea, .likert-scale span {
 
 /* MOBILE RESPONSIVENESS (Anti-Overflow, Flex-Fix) */
 @media (max-width: 768px) {
+    .role-container {
+        justify-content: flex-start; /* İçeriği yukarı yapıştırır, ortalamaz */
+        padding-top: 80px; /* Üstten logonun/başlığın görünmesi için güvenli boşluk */
+        padding-bottom: 40px; 
+    }
+
     .poster-main {
         column-count: 1;
     }
