@@ -673,7 +673,7 @@ let quizState = {
 
 function openExperienceModal() {
     window.lastFocusedElement = document.activeElement;
-    setTimeout(() => { const focusable = document.getElementById("expModal").querySelector("button, [href], input, select, textarea, [tabindex]:not([tabindex=\'-1\'])"); if(focusable) focusable.focus(); }, 100);
+    setTimeout(() => { const focusable = document.getElementById("expOverlay").querySelector("button, [href], input, select, textarea, [tabindex]:not([tabindex=\'-1\'])"); if(focusable) focusable.focus(); }, 100);
     document.getElementById('expOverlay').classList.add('active');
     document.body.classList.add('no-scroll');
     expStage(1);
