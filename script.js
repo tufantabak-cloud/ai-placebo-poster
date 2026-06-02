@@ -688,7 +688,7 @@ function closeExperience() {
 }
 
 function expStage(n) {
-    ['1', '2', '3', '4'].forEach(i => {
+    ['1', '2', '3'].forEach(i => {
         const el = document.getElementById('stage' + i);
         if (el) el.style.display = i == n ? 'block' : 'none';
     });
