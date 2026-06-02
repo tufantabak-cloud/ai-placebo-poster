@@ -2423,3 +2423,8 @@ body.no-scroll {
 }
 
 .u-mt-p-ox table { min-width: 500px; }
+
+
+/* Email links fix */
+.authors a[href^="mailto:"], .landing-footer a[href^="mailto:"] { color: var(--text-main) !important; text-decoration: none !important; transition: color 0.2s; }
+.authors a[href^="mailto:"]:hover, .landing-footer a[href^="mailto:"]:hover { color: var(--accent) !important; }
