@@ -251,7 +251,7 @@ const translations = {
     'a-method-q4': { en: "Why 4–15 s HRF window?", tr: "Neden 4–15 sn HRF penceresi?" },
     'a-method-a4': { en: "fNIRS hemodynamic responses are delayed relative to stimulus onset. The 4–15 s window was used as a literature-informed sensitivity window to capture the expected rise and peak response after label reveal. It should be reported as exploratory/sensitivity analysis, not as a universal standard.", tr: "fNIRS hemodinamik yanıtları, uyaran başlangıcına göre gecikmelidir. 4-15 sn penceresi, etiket gösteriminden sonra beklenen artışı ve zirve yanıtını yakalamak için literatüre dayalı bir duyarlılık penceresi olarak kullanılmıştır. Evrensel bir standart olarak değil, keşfedici/duyarlılık analizi olarak raporlanmalıdır." },
 en: {
-        "portal-badge": "RESEARCH PORTAL &bull; IUE PSYCHOLOGY 2026",
+        "portal-badge": "RESEARCH PORTAL<br>IUE PSYCHOLOGY 2026",
         "landing-title": 'The <span class="accent">"AI-Placebo"</span> Effect in Music',
         "poster-main-title": 'Neuro-Cognitive Dynamics of<br><span class="accent">AI Attribution</span> in Music Perception',
         "landing-sub": "Does knowing a song is AI-generated change how you feel about it?<br>Plain-language explanation and interactive demo. Not a diagnostic brain test.",
@@ -347,7 +347,7 @@ en: {
         "exp-back-poster": "Back to Poster"
     },
     tr: {
-        "portal-badge": "ARAŞTIRMA PORTALI &bull; İEU PSİKOLOJİ 2026",
+        "portal-badge": "ARAŞTIRMA PORTALI<br>İEU PSİKOLOJİ 2026",
         "landing-title": 'Müzikte <span class="accent">"AI-Plasebo"</span> Etkisi',
         "poster-main-title": 'Müzik Algısında<br><span class="accent">YZ Atıfının</span> Nöro-Bilişsel Dinamikleri',
         "landing-sub": "Bir şarkının yapay zeka tarafından yapıldığını bilmek ona olan hislerinizi değiştirir mi?<br>Müzik algısı ve etiket yanılığının arkasındaki sinirbilimi keşfedin.",
