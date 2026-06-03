@@ -2649,22 +2649,28 @@ img, canvas, svg, video {
   }
 }
 
-/* LIKERT SCALE: tek satirda yatay scroll — en son yazilarak onceki wrap kurallarini ezer */
+/* LIKERT SCALE: tek satirda SIGMA (No scroll, auto fit) */
 @media (max-width: 768px) {
   .likert-scale {
     display: flex !important;
     flex-wrap: nowrap !important;
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    justify-content: flex-start !important;
-    scrollbar-width: none !important;
-    gap: 0.4rem !important;
+    overflow-x: visible !important; /* No scrollbar or scrolling behavior */
+    overflow-y: hidden !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    padding: 0.4rem !important;
+    gap: 4px !important;
   }
-  .likert-scale::-webkit-scrollbar { display: none; }
   .likert-scale span {
-    flex: 0 0 auto !important;
-    min-width: 44px !important;
-    width: 44px !important;
-    height: 44px !important;
+    flex: 1 1 0% !important; /* Grow and shrink equally to fit parent */
+    min-width: 25px !important;
+    max-width: 44px !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important; /* Enforces perfect circle shape */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: clamp(0.75rem, 2.5vw, 1rem) !important; /* Scale text dynamically inside circle */
+    border-radius: 50% !important;
   }
 }
