@@ -1099,6 +1099,14 @@ body.mode-visitor .visitor-option {
     }
 }
 
+/* INSTITUTION LINE-BREAK (mobile: 2 lines, desktop: 1 line) */
+.inst-br { display: none; }
+.inst-sep { display: inline; }
+@media (max-width: 768px) {
+    .inst-br { display: inline; }
+    .inst-sep { display: none; }
+}
+
 /* VISIBILITY TOGGLES */
 body.mode-visitor .academic-only {
     display: none !important;
