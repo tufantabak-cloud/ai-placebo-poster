@@ -1690,7 +1690,7 @@ body.mode-visitor .visitor-only[style*="display:inline"] {
         bottom: 1rem;
         width: 100%;
         max-width: 100% !important;
-        margin: 0 !important;
+        margin: 1rem 0 0 0 !important;
         box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
         z-index: 10;
     }
