@@ -1009,7 +1009,7 @@ body.mode-visitor .visitor-option {
 .landing-footer {
     margin-top: 4rem;
     text-align: center;
-    color: #444;
+    color: var(--text-muted);
     font-size: 0.85rem;
     line-height: 1.6;
     border-top: 1px solid rgba(255, 255, 255, 0.02);
@@ -1111,6 +1111,9 @@ body.mode-visitor .poster-main {
 }
 body.mode-visitor .poster-footer {
     grid-template-columns: 1.5fr 1fr; /* Rebalance footer space without the references column */
+}
+body.mode-academic .poster-footer {
+    display: none !important;
 }
 
 /* ACADEMIC ENHANCEMENTS */
@@ -2150,9 +2153,19 @@ body.mode-visitor .visitor-only[style*="display:inline"] {
     .detail-bars { width: 100%; }
 
     /* Dashboard overlay */
-    .dashboard-content { padding: 2rem 1rem; width: 95vw; max-width: 100%; }
+    .dashboard-content { padding: 2rem 1rem; width: 95vw; max-width: 100%; position: relative; }
     .dashboard-grid { grid-template-columns: 1fr; width: 100%; }
     .dash-btn { padding: 1rem; width: 100%; }
+    .dashboard-content .close-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        margin: 0;
+        z-index: 100;
+    }
+    #dash-title {
+        padding-right: 3.5rem;
+    }
 
     /* Charts */
     .main-chart, .secondary-chart { height: 200px; }
@@ -2187,6 +2200,8 @@ body.mode-visitor .visitor-only[style*="display:inline"] {
     .who-are-you { font-size: 0.75rem; letter-spacing: 2px; }
     .exp-meter-row { grid-template-columns: 85px 1fr 35px; font-size: 0.75rem; }
     .exp-brain-img { width: min(220px, 85vw); }
+    .poster-container { padding: 0 0.5rem; }
+    .hypotheses-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
 }
 
 .no-scroll {

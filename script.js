@@ -508,17 +508,16 @@ let currentLang = 'en';
 
 function setLanguage(lang) {
     document.documentElement.lang = lang;
-    document.querySelectorAll('.lang-btn').forEach(b => b.setAttribute('aria-pressed', 'false'));
-    const activeBtn = document.getElementById('lang-' + lang);
-    if(activeBtn) activeBtn.setAttribute('aria-pressed', 'true');
+    
+    // Update all language switchers' active states and accessibility attributes
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        const isActive = btn.getAttribute('data-arg') === lang;
+        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        btn.classList.toggle('active', isActive);
+    });
+    
     currentLang = lang;
     localStorage.setItem('lang', lang);
-    
-    // Update buttons
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        const isEn = btn.textContent.trim() === 'ENG';
-        btn.classList.toggle('active', isEn ? lang === 'en' : lang === 'tr');
-    });
     
     // Update text
     document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -752,6 +751,9 @@ function expStage(n) {
         const el = document.getElementById('stage' + i);
         if (el) el.style.display = i == n ? 'block' : 'none';
     });
+    // Stage değişince overlay'i her zaman en üste kaydır
+    const overlay = document.getElementById('expOverlay');
+    if (overlay) overlay.scrollTop = 0;
 }
 
 function setGenre(g) {
@@ -759,11 +761,13 @@ function setGenre(g) {
     quizState.currentIndex = 0;
     quizState.answers = [];
     
+    const prefix = g === 'arabesque' ? 'ara' : (g === 'electronic' ? 'elec' : g);
+    
     let tracks = [
-        { path: `assets/Music/AI/${g}_a1.wav`, source: 'AI', label: 'AI' },
-        { path: `assets/Music/AI/${g}_a2.wav`, source: 'AI', label: 'Human' },
-        { path: `assets/Music/Human/${g}_h1.wav`, source: 'Human', label: 'AI' },
-        { path: `assets/Music/Human/${g}_h2.wav`, source: 'Human', label: 'Human' }
+        { path: `assets/Music/AI/${prefix}_a1.wav`, source: 'AI', label: 'AI' },
+        { path: `assets/Music/AI/${prefix}_a2.wav`, source: 'AI', label: 'Human' },
+        { path: `assets/Music/Human/${prefix}_h1.wav`, source: 'Human', label: 'AI' },
+        { path: `assets/Music/Human/${prefix}_h2.wav`, source: 'Human', label: 'Human' }
     ];
     // Shuffle the tracks
     tracks.sort(() => Math.random() - 0.5);
@@ -1183,6 +1187,17 @@ document.addEventListener('click', (e) => {
     }
 });
 
+// Global keydown listener for keyboard accessibility on custom interactive elements (divs/spans)
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+        const el = e.target.closest('[role="button"], [data-action]:not([role="radio"])');
+        if (el && !['BUTTON', 'A', 'INPUT', 'SELECT', 'TEXTAREA'].includes(el.tagName)) {
+            e.preventDefault();
+            el.click();
+        }
+    }
+});
+
 
 // === WO3: Keyboard accessibility ===
 // ============================================================
@@ -1214,7 +1229,7 @@ document.addEventListener('keydown', (e) => {
         const modal = getActiveModal();
         if (!modal) return;
         const id = modal.id;
-        if (id === 'dashboardOverlay') toggleDashboard();
+        if (id === 'dashboardOverlay') toggleInteractiveDashboard();
         else if (id === 'expOverlay')   closeExperience();
         // roleOverlay Escape ile kapatilmaz (zorunlu secim ekrani)
         return;
