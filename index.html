@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Neuro-Cognitive Dynamics of AI Attribution in Music</title>
-    <link rel="stylesheet" href="styles.css?v=3.0">
+    <link rel="stylesheet" href="styles.css?v=3.2">
     <link rel="preload" href="/assets/fonts/outfit-900-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/assets/fonts/inter-400-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
     <script src="/assets/vendor/chart.umd.js?v=1.6" defer></script>
@@ -73,7 +73,7 @@
             </div>
         </header>
         <div class="role-container">
-            <h1 class="landing-title" data-i18n="landing-title">The <span class="accent">"AI-Placebo"</span> Effect in Music</h1>
+            <h2 class="landing-title" data-i18n="landing-title">The <span class="accent">"AI-Placebo"</span> Effect in Music</h2>
             
             <p class="landing-sub" data-i18n="landing-sub">Does knowing a song is AI-generated change how you feel about it?<br>
             Explore the neuroscience behind music perception and label bias.</p>
@@ -588,20 +588,26 @@
                     <div class="survey-form" id="surveyForm">
                         <div class="survey-q">
                             <label data-i18n="exp-originality">1. How original did this track feel?</label>
-                            <div class="likert-scale" id="q1">
-                                <span data-action="selectLikert" data-arg="q1,1" role="radio" aria-checked="false" tabindex="0">1</span><span data-action="selectLikert" data-arg="q1,2" role="radio" aria-checked="false" tabindex="0">2</span><span data-action="selectLikert" data-arg="q1,3" role="radio" aria-checked="false" tabindex="0">3</span><span data-action="selectLikert" data-arg="q1,4" role="radio" aria-checked="false" tabindex="0">4</span><span data-action="selectLikert" data-arg="q1,5" role="radio" aria-checked="false" tabindex="0">5</span><span data-action="selectLikert" data-arg="q1,6" role="radio" aria-checked="false" tabindex="0">6</span><span data-action="selectLikert" data-arg="q1,7" role="radio" aria-checked="false" tabindex="0">7</span>
+                            <div class="likert-group" role="radiogroup" aria-label="Originality rating">
+                                <div class="likert-scale" id="q1">
+                                    <span data-action="selectLikert" data-arg="q1,1" role="radio" aria-checked="false" tabindex="0">1</span><span data-action="selectLikert" data-arg="q1,2" role="radio" aria-checked="false" tabindex="0">2</span><span data-action="selectLikert" data-arg="q1,3" role="radio" aria-checked="false" tabindex="0">3</span><span data-action="selectLikert" data-arg="q1,4" role="radio" aria-checked="false" tabindex="0">4</span><span data-action="selectLikert" data-arg="q1,5" role="radio" aria-checked="false" tabindex="0">5</span><span data-action="selectLikert" data-arg="q1,6" role="radio" aria-checked="false" tabindex="0">6</span><span data-action="selectLikert" data-arg="q1,7" role="radio" aria-checked="false" tabindex="0">7</span>
+                                </div>
                             </div>
                         </div>
                         <div class="survey-q">
                             <label data-i18n="exp-ei">2. How much emotion do you think the producer put into this song?</label>
-                            <div class="likert-scale" id="q2">
-                                <span data-action="selectLikert" data-arg="q2,1" role="radio" aria-checked="false" tabindex="0">1</span><span data-action="selectLikert" data-arg="q2,2" role="radio" aria-checked="false" tabindex="0">2</span><span data-action="selectLikert" data-arg="q2,3" role="radio" aria-checked="false" tabindex="0">3</span><span data-action="selectLikert" data-arg="q2,4" role="radio" aria-checked="false" tabindex="0">4</span><span data-action="selectLikert" data-arg="q2,5" role="radio" aria-checked="false" tabindex="0">5</span><span data-action="selectLikert" data-arg="q2,6" role="radio" aria-checked="false" tabindex="0">6</span><span data-action="selectLikert" data-arg="q2,7" role="radio" aria-checked="false" tabindex="0">7</span>
+                            <div class="likert-group" role="radiogroup" aria-label="Emotional investment rating">
+                                <div class="likert-scale" id="q2">
+                                    <span data-action="selectLikert" data-arg="q2,1" role="radio" aria-checked="false" tabindex="0">1</span><span data-action="selectLikert" data-arg="q2,2" role="radio" aria-checked="false" tabindex="0">2</span><span data-action="selectLikert" data-arg="q2,3" role="radio" aria-checked="false" tabindex="0">3</span><span data-action="selectLikert" data-arg="q2,4" role="radio" aria-checked="false" tabindex="0">4</span><span data-action="selectLikert" data-arg="q2,5" role="radio" aria-checked="false" tabindex="0">5</span><span data-action="selectLikert" data-arg="q2,6" role="radio" aria-checked="false" tabindex="0">6</span><span data-action="selectLikert" data-arg="q2,7" role="radio" aria-checked="false" tabindex="0">7</span>
+                                </div>
                             </div>
                         </div>
                         <div class="survey-q">
                             <label data-i18n="exp-quality">3. How would you rate the technical quality?</label>
-                            <div class="likert-scale" id="q3">
-                                <span data-action="selectLikert" data-arg="q3,1" role="radio" aria-checked="false" tabindex="0">1</span><span data-action="selectLikert" data-arg="q3,2" role="radio" aria-checked="false" tabindex="0">2</span><span data-action="selectLikert" data-arg="q3,3" role="radio" aria-checked="false" tabindex="0">3</span><span data-action="selectLikert" data-arg="q3,4" role="radio" aria-checked="false" tabindex="0">4</span><span data-action="selectLikert" data-arg="q3,5" role="radio" aria-checked="false" tabindex="0">5</span><span data-action="selectLikert" data-arg="q3,6" role="radio" aria-checked="false" tabindex="0">6</span><span data-action="selectLikert" data-arg="q3,7" role="radio" aria-checked="false" tabindex="0">7</span>
+                            <div class="likert-group" role="radiogroup" aria-label="Technical quality rating">
+                                <div class="likert-scale" id="q3">
+                                    <span data-action="selectLikert" data-arg="q3,1" role="radio" aria-checked="false" tabindex="0">1</span><span data-action="selectLikert" data-arg="q3,2" role="radio" aria-checked="false" tabindex="0">2</span><span data-action="selectLikert" data-arg="q3,3" role="radio" aria-checked="false" tabindex="0">3</span><span data-action="selectLikert" data-arg="q3,4" role="radio" aria-checked="false" tabindex="0">4</span><span data-action="selectLikert" data-arg="q3,5" role="radio" aria-checked="false" tabindex="0">5</span><span data-action="selectLikert" data-arg="q3,6" role="radio" aria-checked="false" tabindex="0">6</span><span data-action="selectLikert" data-arg="q3,7" role="radio" aria-checked="false" tabindex="0">7</span>
+                                </div>
                             </div>
                         </div>
                         <button class="exp-next-btn" id="nextSongBtn" data-action="nextQuizSong" data-i18n="exp-next-song">Next Track &rarr;</button>
@@ -690,7 +696,10 @@
                             <div class="card u-ta-p">
                                 <h3 class="u-clr-fs-mb-2"><span data-i18n='v-dash-3'>Your brain would have done this:</span></h3>
                                 <div class="brain-glow-wrapper playing-ai u-m-w-h">
-                                    <img src="assets/brain_heatmap.png" alt="Right prefrontal cortex activation heatmap — higher HbO2 response under the AI label." class="u-w-h-br-of" width="1024" height="1024" loading="lazy" decoding="async">
+                                    <picture>
+                                        <source srcset="assets/brain_heatmap.webp" type="image/webp">
+                                        <img src="assets/brain_heatmap.png" alt="Right prefrontal cortex activation heatmap — higher HbO2 response under the AI label." class="u-w-h-br-of" width="1024" height="1024" loading="lazy" decoding="async">
+                                    </picture>
                                 </div>
                                 <p class="u-fs-clr-lh"><span data-i18n='v-dash-3d'>When you saw the 'AI' label, your right prefrontal cortex would have worked harder — in the average participant, by about <strong class="u-text-white">54%</strong>. That's the brain saying "wait, let me think about this."</span></p>
                             </div>
@@ -740,6 +749,6 @@
             </div>
         </div>
     </div>
-    <script src="script.js?v=1.9" defer></script>
+    <script src="script.js?v=2.0" defer></script>
 </body>
 </html>

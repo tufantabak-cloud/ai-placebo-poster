@@ -1,3 +1,63 @@
+// ============================================================
+// iOS SAFARI SCROLL LOCK FIX
+// position:fixed + touchmove engelleme yöntemi
+// ============================================================
+
+// iOS tespiti — navigator.platform deprecated, çift kontrol:
+const _isIOS = /iP(hone|ad|od)/.test(navigator.userAgent) ||
+               (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+
+let _iosScrollY = 0;
+let _lockCount  = 0; // iç içe açılan modaller için referans sayacı
+
+// Modal içindeki scroll'a izin ver, arka planı kilitle
+function _onTouchMove(e) {
+    // Scroll'u olan bir elemanın içindeyse geçir
+    let el = e.target;
+    while (el && el !== document.body) {
+        const style = window.getComputedStyle(el);
+        const overflowY = style.overflowY;
+        const canScroll = (overflowY === 'auto' || overflowY === 'scroll') &&
+                          el.scrollHeight > el.clientHeight;
+        if (canScroll) return; // modal scroll alanı — geçir
+        el = el.parentElement;
+    }
+    e.preventDefault(); // arka plan scroll'unu engelle
+}
+
+function lockBodyScroll() {
+    _lockCount++;
+    if (_lockCount > 1) return; // zaten kilitli
+
+    if (_isIOS) {
+        _iosScrollY = window.pageYOffset;
+        document.body.style.position   = 'fixed';
+        document.body.style.top        = `-${_iosScrollY}px`;
+        document.body.style.width      = '100%';
+        document.body.style.overflowY  = 'scroll'; // kaydırma çubuğu genişlik kaymasını önler
+        // touchmove dinleyici — passive:false şart (preventDefault için)
+        document.addEventListener('touchmove', _onTouchMove, { passive: false });
+    }
+    document.body.classList.add('no-scroll');
+}
+
+function unlockBodyScroll() {
+    if (_lockCount <= 0) return;
+    _lockCount--;
+    if (_lockCount > 0) return; // başka modal hâlâ açık
+
+    document.body.classList.remove('no-scroll');
+    if (_isIOS) {
+        document.removeEventListener('touchmove', _onTouchMove, { passive: false });
+        document.body.style.position  = '';
+        document.body.style.top       = '';
+        document.body.style.width     = '';
+        document.body.style.overflowY = '';
+        // Kaydırma pozisyonunu geri yükle
+        window.scrollTo({ top: _iosScrollY, behavior: 'instant' });
+    }
+}
+
 // Chart Configuration and Initialization
 if (typeof Chart !== 'undefined') {
     Chart.defaults.color = '#a0a5b0';
@@ -618,14 +678,14 @@ function toggleInteractiveDashboard() {
     }
     if(overlay) {
         overlay.classList.toggle('active');
-        if(overlay.classList.contains('active')) document.body.classList.add('no-scroll');
-        else document.body.classList.remove('no-scroll');
+        if(overlay.classList.contains('active')) lockBodyScroll();
+        else unlockBodyScroll();
     }
 }
 
 function selectRole(role) {
     document.getElementById('roleOverlay').classList.remove('active');
-    document.body.classList.remove('no-scroll');
+    unlockBodyScroll();
     if (typeof expAudio !== 'undefined' && expAudio) expAudio.pause();
 
     localStorage.setItem('userPath', role);
@@ -647,7 +707,7 @@ function togglePath() {
 
 function backToLanding() {
     document.getElementById('roleOverlay').classList.add('active');
-    document.body.classList.add('no-scroll');
+    lockBodyScroll();
     document.body.classList.remove('mode-visitor', 'mode-academic');
     localStorage.removeItem('userPath');
     if (typeof expAudio !== 'undefined' && expAudio) {
@@ -675,14 +735,14 @@ function openExperienceModal() {
     window.lastFocusedElement = document.activeElement;
     setTimeout(() => { const focusable = document.getElementById("expOverlay").querySelector("button, [href], input, select, textarea, [tabindex]:not([tabindex=\'-1\'])"); if(focusable) focusable.focus(); }, 100);
     document.getElementById('expOverlay').classList.add('active');
-    document.body.classList.add('no-scroll');
+    lockBodyScroll();
     expStage(1);
 }
 
 function closeExperience() {
     if(window.lastFocusedElement) { window.lastFocusedElement.focus(); window.lastFocusedElement = null; }
     document.getElementById('expOverlay').classList.remove('active');
-    document.body.classList.remove('no-scroll');
+    unlockBodyScroll();
     if (expAudio) { expAudio.pause(); expAudio = null; }
     document.querySelectorAll('.listen-btn').forEach(btn => btn.classList.remove('playing'));
 }
@@ -763,7 +823,7 @@ function playQuizSong() {
         });
 
     quizState.currentAnswers = { q1: null, q2: null, q3: null };
-    document.querySelectorAll('.likert-scale span').forEach(s => s.classList.remove('selected'));
+    document.querySelectorAll('.likert-scale span').forEach(s => { s.classList.remove('selected'); s.setAttribute('aria-checked', 'false'); });
     const btn = document.getElementById('nextSongBtn');
     btn.style.opacity = '0.5';
     btn.style.pointerEvents = 'none';
@@ -835,8 +895,13 @@ function toggleQuizAudio() {
 function selectLikert(qId, val) {
     quizState.currentAnswers[qId] = parseInt(val);
     const parent = document.getElementById(qId);
-    parent.querySelectorAll('span').forEach(s => s.classList.remove('selected'));
-    parent.querySelectorAll('span')[val-1].classList.add('selected');
+    parent.querySelectorAll('span').forEach(s => {
+        s.classList.remove('selected');
+        s.setAttribute('aria-checked', 'false');
+    });
+    const target = parent.querySelectorAll('span')[val-1];
+    target.classList.add('selected');
+    target.setAttribute('aria-checked', 'true');
 
     if (quizState.currentAnswers.q1 && quizState.currentAnswers.q2 && quizState.currentAnswers.q3) {
         const btn = document.getElementById('nextSongBtn');
@@ -1039,7 +1104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         // Ensure body is locked if overlay is active on start
         if(document.getElementById('roleOverlay').classList.contains('active')) {
-            document.body.classList.add('no-scroll');
+            lockBodyScroll();
         }
     }
 
@@ -1120,51 +1185,127 @@ document.addEventListener('click', (e) => {
 
 
 // === WO3: Keyboard accessibility ===
+// ============================================================
+// FOCUS TRAP — Erişilebilirlik
+// Modal açıkken Tab/Shift+Tab odağı modal dışına kaçmaz.
+// Escape tuşu modali kapatır.
+// ============================================================
+const FOCUSABLE = [
+    'a[href]',
+    'button:not([disabled])',
+    'input:not([disabled])',
+    'select:not([disabled])',
+    'textarea:not([disabled])',
+    '[tabindex]:not([tabindex="-1"])',
+    'details > summary'
+].join(', ');
+
+const MODAL_IDS = ['roleOverlay', 'expOverlay', 'dashboardOverlay'];
+
+function getActiveModal() {
+    return MODAL_IDS
+        .map(id => document.getElementById(id))
+        .find(el => el && (el.classList.contains('active') || el.style.display === 'flex'));
+}
+
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-        const el = e.target.closest('[data-action]');
-        if (!el) return;
-        
-        // Don't prevent default on regular links or buttons inside forms if they shouldn't be overridden
-        if(e.target.tagName !== 'BUTTON' || el.dataset.action) {
-            e.preventDefault();
-            const action = el.dataset.action;
-            const fn = actionMap[action];
-            if (typeof fn === 'function') {
-                let args = [];
-                if (el.dataset.arg) {
-                    args = el.dataset.arg.split(',').map(a => {
-                        const trimmed = a.trim();
-                        if (trimmed !== '' && !isNaN(trimmed)) return Number(trimmed);
-                        return trimmed;
-                    });
-                }
-                if (action === 'playIndividualSong') {
-                    fn(args[0], el);
-                } else {
-                    fn(...args);
-                }
+    // ── Escape: aktif modali kapat ──
+    if (e.key === 'Escape') {
+        const modal = getActiveModal();
+        if (!modal) return;
+        const id = modal.id;
+        if (id === 'dashboardOverlay') toggleDashboard();
+        else if (id === 'expOverlay')   closeExperience();
+        // roleOverlay Escape ile kapatilmaz (zorunlu secim ekrani)
+        return;
+    }
+
+    // Tab / Shift+Tab: odagi modal icinde tut
+    if (e.key === 'Tab') {
+        const modal = getActiveModal();
+        if (!modal) return;
+
+        const focusables = Array.from(modal.querySelectorAll(FOCUSABLE))
+            .filter(el => !el.closest('[hidden]') && el.offsetParent !== null);
+
+        if (focusables.length === 0) { e.preventDefault(); return; }
+
+        const first = focusables[0];
+        const last  = focusables[focusables.length - 1];
+
+        if (e.shiftKey) {
+            if (document.activeElement === first || !modal.contains(document.activeElement)) {
+                e.preventDefault();
+                last.focus();
+            }
+        } else {
+            if (document.activeElement === last || !modal.contains(document.activeElement)) {
+                e.preventDefault();
+                first.focus();
             }
         }
     }
+}, true);
+
+// MutationObserver ile .active sinifi degisiminde aria-hidden guncelle
+const _modalObserver = new MutationObserver(() => {
+    const MIDS = ['roleOverlay', 'expOverlay', 'dashboardOverlay'];
+    MIDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const isOpen = el.classList.contains('active') || el.style.display === 'flex';
+        el.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+    });
+    const anyOpen = MIDS.some(id => {
+        const el = document.getElementById(id);
+        return el && (el.classList.contains('active') || el.style.display === 'flex');
+    });
+    const bg = document.querySelector('.poster-container') || document.querySelector('main');
+    if (bg) bg.setAttribute('aria-hidden', anyOpen ? 'true' : 'false');
 });
 
-// === WO3: Focus Management & Esc Key ===
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        const dash = document.getElementById('dashboardOverlay');
-        const exp = document.getElementById('expModal');
-        if (dash && dash.classList.contains('active')) {
-            toggleInteractiveDashboard();
-        } else if (exp && exp.classList.contains('active')) {
-            closeExperience();
-        }
-    }
-});
-
-// Also apply lang at startup
 document.addEventListener('DOMContentLoaded', () => {
-    if(typeof currentLang !== 'undefined') {
-        document.documentElement.lang = currentLang;
-    }
+    const MIDS = ['roleOverlay', 'expOverlay', 'dashboardOverlay'];
+    MIDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.setAttribute('role', 'dialog');
+            el.setAttribute('aria-modal', 'true');
+            _modalObserver.observe(el, { attributes: true, attributeFilter: ['class', 'style'] });
+        }
+    });
+    const expEl = document.getElementById('expOverlay');
+    if (expEl) expEl.setAttribute('aria-hidden', 'true');
+});
+
+// ============================================================
+// LIKERT SCROLL HINT — scrolled-end sinifi ile fade/ok gizlenir
+// ============================================================
+function initLikertScrollHints() {
+    document.querySelectorAll('.likert-scale').forEach(function(scale) {
+        var group = scale.closest('.likert-group');
+        if (!group) return;
+        function checkScroll() {
+            var atEnd = scale.scrollLeft + scale.clientWidth >= scale.scrollWidth - 4;
+            group.classList.toggle('scrolled-end', atEnd);
+        }
+        scale.addEventListener('scroll', checkScroll, { passive: true });
+        setTimeout(checkScroll, 150); // tum elemanlar sigiyorsa ipucunu gizle
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initLikertScrollHints);
+
+// expOverlay acildiginda Likert'leri yeniden baslat
+document.addEventListener('DOMContentLoaded', function() {
+    var expEl = document.getElementById('expOverlay');
+    if (!expEl) return;
+    var obs = new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+            if (m.target.classList.contains('active')) {
+                setTimeout(initLikertScrollHints, 250);
+            }
+        });
+    });
+    obs.observe(expEl, { attributes: true, attributeFilter: ['class'] });
 });

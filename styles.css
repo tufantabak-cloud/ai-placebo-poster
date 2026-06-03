@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after{
+    box-sizing:border-box;
+}
+
 /* === WO5: Self-hosted font faces === */
 /* latin-ext */
 @font-face {
@@ -754,19 +760,31 @@ body.mode-visitor .visitor-option {
 .mt-3 { margin-top: 1.5rem; }
 
 /* OVERLAY */
+.overlay {
+    width: 100%;
+}
+
 .dashboard-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0,0,0,0.85);
     backdrop-filter: blur(10px);
+    /* Overlay kendisi scroll container — içerik kesilmez */
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
     z-index: 3000;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
+    /* iOS safe area dolgusu */
+    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px)
+             env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
 }
 
 .dashboard-overlay.active {
@@ -785,6 +803,8 @@ body.mode-visitor .visitor-option {
     box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     transform: translateY(20px);
     transition: transform 0.3s ease;
+    /* max-height kaldırıldı — overlay scroll ediyor */
+    margin: auto;  /* dikey ortalama: içerik kısa olduğunda ortalanır */
 }
 
 .dashboard-overlay.active .dashboard-content {
@@ -1102,6 +1122,15 @@ body.mode-visitor .poster-footer {
     border: 1px solid var(--accent);
     z-index: 10;
 }
+@media (max-width: 768px) {
+    .academic-tooltip::after {
+        white-space: normal;
+        width: min(260px, 80vw);
+        left: 0;
+        transform: none;
+        font-size: 0.75rem;
+    }
+}
 .academic-tooltip:hover::after {
     opacity: 1;
 }
@@ -1180,21 +1209,32 @@ body.mode-visitor .visitor-only[style*="display:inline"] {
     display: inline-block;
 }
 .brain-glow-wrapper.playing-human {
-    animation: brainPulseHuman 1s infinite alternate;
+    animation: brainPulseHuman 1.2s infinite alternate ease-in-out;
     box-shadow: 0 0 50px rgba(29, 185, 84, 0.6);
+    will-change: transform, opacity;
 }
 .brain-glow-wrapper.playing-ai {
-    animation: brainPulseAI 1s infinite alternate;
+    animation: brainPulseAI 1.4s infinite alternate ease-in-out;
     box-shadow: 0 0 40px rgba(100, 150, 255, 0.4);
+    will-change: transform, opacity;
 }
 
+/* GPU-dostu: yalnızca transform + opacity — filter animasyonu yok */
 @keyframes brainPulseHuman {
-    from { filter: brightness(1) saturate(1); transform: scale(1); }
-    to { filter: brightness(1.3) saturate(1.5); transform: scale(1.02); }
+    from { transform: scale(1);    opacity: 0.88; }
+    to   { transform: scale(1.03); opacity: 1;    }
 }
 @keyframes brainPulseAI {
-    from { filter: brightness(0.9) saturate(0.8) hue-rotate(0deg); transform: scale(1); }
-    to { filter: brightness(1.1) saturate(1) hue-rotate(30deg); transform: scale(1.01); }
+    from { transform: scale(1);    opacity: 0.82; }
+    to   { transform: scale(1.02); opacity: 0.97; }
+}
+
+/* Sabit filtre: animasyonsuz, sadece görsel ayrım için */
+.brain-glow-wrapper.playing-human img {
+    filter: brightness(1.15) saturate(1.2);
+}
+.brain-glow-wrapper.playing-ai img {
+    filter: brightness(0.95) saturate(0.85) hue-rotate(20deg);
 }
 
 .bar {
@@ -1210,8 +1250,16 @@ body.mode-visitor .visitor-only[style*="display:inline"] {
 .bar:nth-child(5) { animation-delay: 0.4s; }
 
 @keyframes soundWave {
-    0% { height: 5px; }
-    100% { height: 30px; }
+    0% { height: 8px; }
+    100% { height: 32px; }
+}
+/* Mobilde ses barları biraz daha belirgin */
+@media (max-width: 768px) {
+    .bar { width: 5px; }
+    @keyframes soundWave {
+        0% { height: 10px; }
+        100% { height: 28px; }
+    }
 }
 
 /* ============================================================
@@ -1589,6 +1637,100 @@ body.mode-visitor .visitor-only[style*="display:inline"] {
     margin-bottom: 0.8rem;
     font-size: 1.05rem;
 }
+@media (max-width: 768px) {
+    .survey-q label {
+        font-size: 0.95rem;
+        margin-bottom: 0.6rem;
+        line-height: 1.4;
+    }
+    .survey-form {
+        gap: 1.25rem !important;
+        padding: 0 !important;
+    }
+    /* Sonraki Parça butonu — ekranın altında her zaman görünür */
+    .exp-next-btn {
+        position: sticky;
+        bottom: 1rem;
+        width: 100%;
+        max-width: 100% !important;
+        margin: 0 !important;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
+        z-index: 10;
+    }
+}
+/* Likert scroll wrapper — fade ipucu için position:relative gerekli */
+.likert-group {
+    position: relative;
+}
+
+/* Sağ kenar fade — kaydırılabilir olduğunu gösterir */
+.likert-group::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 48px;
+    height: 100%;
+    background: linear-gradient(to right, transparent, #050809 85%);
+    pointer-events: none;
+    border-radius: 0 16px 16px 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+}
+/* Kullanıcı sona kadar kaydırdığında ipucunu gizle */
+.likert-group.scrolled-end::after {
+    opacity: 0;
+}
+
+/* Kaydır ikonu — fade üzerinde */
+.likert-group::before {
+    content: '›';
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: var(--accent);
+    font-size: 1.4rem;
+    font-weight: 900;
+    pointer-events: none;
+    z-index: 3;
+    animation: nudgeRight 1.2s ease-in-out infinite;
+    transition: opacity 0.3s ease;
+    line-height: 1;
+}
+.likert-group.scrolled-end::before {
+    opacity: 0;
+}
+@keyframes nudgeRight {
+    0%, 100% { transform: translateY(-50%) translateX(0); }
+    50%       { transform: translateY(-50%) translateX(4px); }
+}
+
+/* Masaüstünde fade/ikon gizle — wrap olduğu için scroll yok */
+@media (min-width: 769px) {
+    .likert-group::after,
+    .likert-group::before { display: none; }
+}
+
+/* Mobilde: tek satır + yatay scroll */
+@media (max-width: 768px) {
+    .likert-scale {
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        justify-content: flex-start !important;
+        padding-bottom: 6px !important;
+        /* Scrollbar gizle ama scroll çalışsın */
+        scrollbar-width: none;
+    }
+    .likert-scale::-webkit-scrollbar { display: none; }
+    .likert-scale span {
+        flex: 0 0 auto !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+    }
+}
+
 .likert-scale {
     display: flex;
     flex-wrap: wrap;
@@ -2497,118 +2639,4 @@ img, canvas, svg, video {
     width: 100% !important;
     align-items: center !important;
   }
-
-  /* Reset main layouts to single column stack */
-  .poster-main {
-    column-count: 1 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    gap: 1rem !important;
-  }
-
-  .poster-footer, .poster-header, .header-top-bar, .interactive-zone, .header-controls {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    align-items: center !important;
-    text-align: center !important;
-    gap: 1rem !important;
-  }
-  
-  .col-left, .col-center, .col-right, .card, .flex-item {
-    width: 100% !important;
-    flex-basis: 100% !important;
-    display: block !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-  
-  .hypotheses-grid, .design-grid, .role-cards {
-    grid-template-columns: 1fr !important;
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-  }
-  
-  .card {
-    padding: 1rem !important;
-  }
-  
-  .dashboard-content {
-    padding: 1.5rem !important;
-    width: 95% !important;
-    margin: 0 auto !important;
-  }
 }
-
-
-/* Additional Fallback and Exact Classes for Mobile Survey & Layout */
-@media (max-width: 768px) {
-  .survey-form, .survey-q, .chart-container {
-    flex-direction: column !important;
-    width: 100% !important;
-    align-items: center !important;
-  }
-  .likert-scale span {
-    flex: 1 1 auto;
-    min-width: 30px;
-    margin: 2px;
-  }
-}
-
-
-/* Additional Refinements based on UX Audit */
-@media (max-width: 768px) {
-  /* Ensure proper padding on the sides so text doesn't stick to the edges */
-  body, .poster-container {
-    padding-left: 15px !important;
-    padding-right: 15px !important;
-  }
-
-  .dashboard-content {
-    padding-left: 15px !important;
-    padding-right: 15px !important;
-    width: 100% !important;
-  }
-
-  /* Likert Scale - Horizontal scroll instead of wrap for better UX */
-  .likert-scale {
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    justify-content: flex-start !important;
-    width: 100% !important;
-    padding-bottom: 8px !important;
-  }
-  
-  .likert-scale span {
-    flex: 0 0 auto !important; /* Prevent shrinking */
-    min-width: 45px !important;
-  }
-}
-
-.footer-email-link {
-    color: #f0f2f5;
-    text-decoration: none;
-}
-
-.exp-final-btns-wrapper {
-    margin-top: 2rem;
-}
-
-
-/* MOBILE FIX FOR LANDING TITLE */
-@media (max-width: 768px) {
-    .role-container {
-        padding-top: calc(72px + env(safe-area-inset-top));
-        justify-content: flex-start;
-    }
-    .landing-title {
-        position: relative;
-        z-index: 10;
-        display: block;
-        margin-top: 10px;
-    }
-}
-
