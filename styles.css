@@ -1318,6 +1318,13 @@ body.mode-visitor .visitor-only[style*="display:inline"] {
 }
 .exp-overlay.active { display: flex; }
 
+.exp-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .exp-close {
     position: fixed;
     top: 1.5rem; right: 2rem;
@@ -2628,15 +2635,36 @@ img, canvas, svg, video {
 /* 4. Single Column Layout on Mobile */
 @media (max-width: 768px) {
   /* Fix 1-7 Survey Scales */
-  .survey-container, .likert-group, .rating-container, .likert-scale, .options-container {
+  .survey-container, .likert-group, .rating-container, .options-container {
     flex-wrap: wrap !important;
     justify-content: center !important;
   }
+  /* .likert-scale ayrı yönetiliyor — nowrap + scroll */
   
   /* Fallback to column for survey if wrap is not enough */
   .survey-container {
     flex-direction: column !important;
     width: 100% !important;
     align-items: center !important;
+  }
+}
+
+/* LIKERT SCALE: tek satirda yatay scroll — en son yazilarak onceki wrap kurallarini ezer */
+@media (max-width: 768px) {
+  .likert-scale {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    justify-content: flex-start !important;
+    scrollbar-width: none !important;
+    gap: 0.4rem !important;
+  }
+  .likert-scale::-webkit-scrollbar { display: none; }
+  .likert-scale span {
+    flex: 0 0 auto !important;
+    min-width: 44px !important;
+    width: 44px !important;
+    height: 44px !important;
   }
 }

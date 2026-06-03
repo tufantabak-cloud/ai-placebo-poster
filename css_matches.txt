@@ -1,0 +1,169 @@
+.exp-stage { 
+    width: 100%; 
+    max-width: 900px; 
+    padding: 4rem 2rem; 
+    animation: fadeIn 0.5s; 
+}
+
+=======================
+
+.exp-stage-inner { display: flex; flex-direction: column; flex-wrap: nowrap; align-items: center; text-align: center; }
+
+=======================
+
+.exp-stage {
+    max-width: 1100px; /* Make it wider to accommodate 2 columns */
+}
+
+=======================
+
+.exp-stage { padding: 2rem 1rem; width: 100%; }
+
+=======================
+
+.exp-stage-inner { width: 100%; max-width: 100%; }
+
+=======================
+
+.exp-stage-inner > *:last-child,
+.likert-scale > *:last-child,
+.design-grid > *:last-child,
+.survey-q > *:last-child,
+.detail-row > *:last-child,
+.exp-results-detailed > *:last-child,
+.song-card > *:last-child,
+.hyp-item > *:last-child,
+.timeline > *:last-child,
+.tl-item > *:last-child,
+.method-section > *:last-child,
+.dashboard-content > *:last-child,
+.exp-reveal-box > *:last-child {
+    margin-bottom: 0 !important;
+}
+
+=======================
+
+.exp-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: #050809;
+    overflow-y: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+=======================
+
+.exp-overlay.active { display: flex; }
+
+=======================
+
+.song-card {
+    background: rgba(20, 20, 25, 0.6);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: left;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.2s;
+}
+
+=======================
+
+.song-card:hover {
+    transform: translateY(-2px);
+}
+
+=======================
+
+.song-card.manipulated {
+    border-color: rgba(255, 100, 100, 0.4);
+    background: linear-gradient(145deg, rgba(20,20,25,0.6), rgba(255, 100, 100, 0.05));
+    box-shadow: 0 0 15px rgba(255, 100, 100, 0.15);
+}
+
+=======================
+
+.song-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+=======================
+
+.song-card {
+        width: 100% !important;
+        min-width: unset !important;
+    }
+
+=======================
+
+.song-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+=======================
+
+.song-card > *:last-child,
+.hyp-item > *:last-child,
+.timeline > *:last-child,
+.tl-item > *:last-child,
+.method-section > *:last-child,
+.dashboard-content > *:last-child,
+.exp-reveal-box > *:last-child {
+    margin-bottom: 0 !important;
+}
+
+=======================
+
+.song-card,
+.dash-card,
+.insight-panel {
+    padding: clamp(8px, 2vw, 16px) !important;
+}
+
+=======================
+
+.exp-song-breakdown {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+=======================
+
+.exp-song-breakdown {
+    grid-template-columns: 1fr 1fr; /* 2x2 grid inside the right column */
+    margin-bottom: 0;
+}
+
+=======================
+
+.exp-song-breakdown { grid-template-columns: 1fr; width: 100%; }
+
+=======================
+
+.exp-song-breakdown,
+.reveal-dashboard {
+    grid-auto-rows: min-content !important;
+}
+
+=======================
+
+.exp-song-breakdown,
+.reveal-dashboard {
+    height: auto !important;
+    overflow: visible !important;
+}
+
+=======================
+
