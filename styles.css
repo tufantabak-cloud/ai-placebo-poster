@@ -1749,22 +1749,28 @@ body.mode-visitor .visitor-only[style*="display:inline"] {
     .likert-group::before { display: none; }
 }
 
-/* Mobilde: tek satır + yatay scroll */
+/* Mobilde: tüm 7 buton tek satırda, kaydırmasız */
 @media (max-width: 768px) {
     .likert-scale {
         flex-wrap: nowrap !important;
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        justify-content: flex-start !important;
-        padding-bottom: 6px !important;
-        /* Scrollbar gizle ama scroll çalışsın */
-        scrollbar-width: none;
+        overflow-x: visible !important;
+        overflow: visible !important;
+        justify-content: space-between !important;
+        padding: 0.4rem !important;
+        gap: 0.25rem !important;
     }
-    .likert-scale::-webkit-scrollbar { display: none; }
     .likert-scale span {
-        flex: 0 0 auto !important;
-        min-width: 44px !important;
-        min-height: 44px !important;
+        flex: 1 1 0% !important;
+        min-width: 0 !important;
+        width: auto !important;
+        height: auto !important;
+        aspect-ratio: 1 / 1 !important;
+        font-size: 0.85rem !important;
+    }
+    /* Scroll ipuçlarını gizle — artık scroll yok */
+    .likert-group::after,
+    .likert-group::before {
+        display: none !important;
     }
 }
 
@@ -2187,8 +2193,7 @@ body.mode-visitor .visitor-only[style*="display:inline"] {
     /* Close button */
     .exp-close { position: fixed; top: max(0.5rem, env(safe-area-inset-top, 0.5rem)); right: max(0.5rem, env(safe-area-inset-right, 0.5rem)); font-size: 0.8rem; padding: 0.4rem 0.9rem; }
 
-    /* Likert */
-    .likert-scale span { width: 36px; height: 36px; font-size: 0.9rem; }
+    /* Likert — flex-based sizing handled in earlier mobile block */
 }
 
 /* Small phone breakpoint */
@@ -2208,8 +2213,8 @@ body.mode-visitor .visitor-only[style*="display:inline"] {
     overflow: hidden !important;
 }
 
-/* Input Optimization for iOS */
-input, select, textarea, .likert-scale span {
+/* Input Optimization for iOS — prevent auto-zoom */
+input, select, textarea {
     font-size: 16px !important;
 }
 
