@@ -2754,3 +2754,19 @@ img, canvas, svg, video {
     font-size: 1rem !important;
   }
 }
+
+/* ================================================================
+   MOBILE OVERRIDE: ALWAY SHOW ACADEMIC DASHBOARD IN STAGE 3
+   ================================================================ */
+@media (max-width: 768px) {
+  /* Mobil test sonuçlarında Akademik paneli (Panel 1,2,3,4) her zaman göster */
+  #stage3 .reveal-dashboard.academic-only {
+    display: flex !important;
+  }
+  
+  /* Mobil test sonuçlarında oyunlaştırılmış Ziyaretçi panelini tamamen gizle */
+  #stage3 .reveal-dashboard.visitor-only {
+    display: none !important;
+  }
+}
+
